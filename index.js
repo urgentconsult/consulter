@@ -15,7 +15,10 @@ var consul_host = args.consul_host  || process.env.CONSUL_HOST || '127.0.0.1'
 var forever_confs = {
   env: {
     NODE_ENV : 'consulter'
-  }
+  },
+  spinSleepTime: 10000,
+  minUptime: 5000,
+  max: 10
 };
 
 var log = function(type, message) {
