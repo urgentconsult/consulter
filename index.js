@@ -123,7 +123,7 @@ if (consul_path.length > 0 && consul_path[consul_path.length - 1] === '/') {
   consul_path.slice(0, -1);
 }
 
-if ('_' in args && args._.length === 1) {
+if ('_' in args && args._.length === 1 && args._[0].indexOf('.js') !== -1) {
   app_path = path.resolve(args._.pop());
   
   fs.exists(app_path, function(exists) {
