@@ -29,7 +29,7 @@ var log = function(type, message) {
   } else {
     console.log(message);
   }
-}
+};
 
 var cleanup = function() {
   fs.exists(config_path + '/consulter.json', function(exists) {
@@ -41,7 +41,7 @@ var cleanup = function() {
     } else {
       process.exit();
     }
-  }
+  });
 };
 
 // write consul k/v config to a file location specified by config options or 
