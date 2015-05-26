@@ -31,6 +31,19 @@ var log = function(type, message) {
   }
 }
 
+var cleanup = function() {
+  fs.exists(config_path + '/consulter.json', function(exists) {
+    log('log', 'Exiting...');
+    if (exists) {
+      fs.unlink(config_path  + '/consulter.json', function() {
+        process.exit();
+      });
+    } else {
+      process.exit();
+    }
+  }
+};
+
 // write consul k/v config to a file location specified by config options or 
 // $PWD/config/consulter.json then, launch the program up with forever.js or
 // relaunch if it was running append NODE_ENV=consulter so that node programs 
@@ -59,14 +72,12 @@ var launchOrRelaunch = function(conf) {
         child_process = forever.start(app_path, forever_confs);
                 
         child_process.on('restart', function() {
-          log('error', 'Restarting script due to consul k/v changes');            
+          log('error', 'Restarting script due to consul k/v changes or script failure');            
         });
         
         child_process.on('exit', function() {
           log('error', 'Process could not stay up, exiting...');
-          fs.unlink(config_path  + '/consulter.json', function() {
-            process.exit(-1);
-          });
+          cleanup();
         });
       }
     });
@@ -129,3 +140,9 @@ if ('_' in args && args._.length === 1) {
 } else {
   execute();
 }
+
+// Cleanup files created on exit
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
+process.on('SIGINT', cleanup);
+process.on('SIGHUP', cleanup);
