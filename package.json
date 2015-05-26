@@ -1,0 +1,19 @@
+{
+  "name": "consulter",
+  "version": "1.0.0",
+  "description": "Consul configuration writer with a process-restarting wrapper",
+  "main": "index.js",
+  "bin" : {
+    "consulter" : "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andy Winder <ajwinder@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "consul": "0.14.0",
+    "forever-monitor": "1.5.2",
+    "minimist": "1.1.1"
+  }
+}
