@@ -5,11 +5,12 @@ var args = require('minimist')(process.argv.slice(2))
   , forever = require('forever-monitor')
   , path = require('path');
     
-var consul_host = args.consul_host  || process.env.CONSUL_HOST || '127.0.0.1'
-  , consul_port = args.consul_port  || process.env.CONSUL_PORT || 8500
-  , consul_path = args.consul_path  || process.env.CONSUL_PATH || false
-  , config_path = args.config_path  || process.env.CONFIG_PATH || false
-  , one_time    = args.single_run   || process.env.SINGLE_RUN  || false  
+var consul_host = args.consul_host     || process.env.CONSUL_HOST     || '127.0.0.1'
+  , consul_port = args.consul_port     || process.env.CONSUL_PORT     || 8500
+  , consul_path = args.consul_path     || process.env.CONSUL_PATH     || false
+  , config_path = args.config_path     || process.env.CONFIG_PATH     || false
+  , config_file = args.config_filename || process.env.CONFIG_FILENAME || 'consulter.json'
+  , one_time    = args.single_run      || process.env.SINGLE_RUN      || false
   , app_path    = ''
   , child_process = false;
     
@@ -33,10 +34,10 @@ var log = function(type, message) {
 };
 
 var cleanup = function() {
-  fs.exists(config_path + '/consulter.json', function(exists) {
+  fs.exists(config_path + '/' + config_file, function(exists) {
     log('log', 'Exiting...');
     if (exists) {
-      fs.unlink(config_path  + '/consulter.json', function() {
+      fs.unlink(config_path + '/' + config_file, function() {
         process.exit();
       });
     } else {
@@ -62,7 +63,7 @@ var launchOrRelaunch = function(conf) {
       return process.exit(-1);
     }
         
-    fs.writeFile(config_path  + '/consulter.json', JSON.stringify(conf, false, 2), function() {      
+    fs.writeFile(config_path  + '/' + config_file, JSON.stringify(conf, false, 2), function() {      
       if (one_time || app_path === '') {
         return process.exit(-1);
       }
