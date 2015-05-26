@@ -16,7 +16,7 @@ var forever_confs = {
   env: {
     NODE_ENV : 'consulter'
   },
-  spinSleepTime: 10000,
+  spinSleepTime: 5000,
   minUptime: 5000,
   max: 10
 };
@@ -60,7 +60,14 @@ var launchOrRelaunch = function(conf) {
                 
         child_process.on('restart', function() {
           log('error', 'Restarting script due to consul k/v changes');            
-        });          
+        });
+        
+        child_process.on('exit', function() {
+          log('error', 'Process could not stay up, exiting...');
+          fs.unlink(config_path  + '/consulter.json', function() {
+            process.exit(-1);
+          });
+        });
       }
     });
   });
