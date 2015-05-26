@@ -65,7 +65,7 @@ var launchOrRelaunch = function(conf) {
         
     fs.writeFile(config_path  + '/' + config_file, JSON.stringify(conf, false, 2), function() {      
       if (one_time || app_path === '') {
-        return process.exit(-1);
+        return process.exit();
       }
       
       if (child_process !== false) {
