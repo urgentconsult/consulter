@@ -9,6 +9,7 @@ var consul_host = args.consul_host  || process.env.CONSUL_HOST || '127.0.0.1'
   , consul_port = args.consul_port  || process.env.CONSUL_PORT || 8500
   , consul_path = args.consul_path  || process.env.CONSUL_PATH || false
   , config_path = args.config_path  || process.env.CONFIG_PATH || false
+  , one_time    = args.single_run   || process.env.SINGLE_RUN  || false  
   , app_path    = ''
   , child_process = false;
     
@@ -61,9 +62,9 @@ var launchOrRelaunch = function(conf) {
       return process.exit(-1);
     }
         
-    fs.writeFile(config_path  + '/consulter.json', JSON.stringify(conf, false, 2), function() {
-      if (app_path === '') {
-        return ;
+    fs.writeFile(config_path  + '/consulter.json', JSON.stringify(conf, false, 2), function() {      
+      if (one_time || app_path === '') {
+        return process.exit(-1);
       }
       
       if (child_process !== false) {
