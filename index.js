@@ -144,5 +144,4 @@ if ('_' in args && args._.length === 1) {
 // Cleanup files created on exit
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
-process.on('SIGINT', cleanup);
 process.on('SIGHUP', cleanup);
