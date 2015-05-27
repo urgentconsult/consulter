@@ -136,7 +136,7 @@ if ('_' in args && args._.length === 1 && args._[0].indexOf('.js') !== -1) {
   
     execute();
   });
-} else if ('_' in args && args._.length > 1){
+} else if ('_' in args && args._.length > 0){
   app_path = args._;
   execute();
 } else {
