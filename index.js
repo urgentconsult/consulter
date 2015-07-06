@@ -33,9 +33,14 @@ var log = function(type, message) {
   }
 };
 
-var cleanup = function() {
+var cleanup = function(skip_child_exit) {
   fs.exists(config_path + '/' + config_file, function(exists) {
     log('log', 'Exiting...');
+    
+    if (child_process !== false && !skip_child_exit) {
+      child_process.exit();
+    }
+    
     if (exists) {
       fs.unlink(config_path + '/' + config_file, function() {
         process.exit();
@@ -79,7 +84,7 @@ var launchOrRelaunch = function(conf) {
         
         child_process.on('exit', function() {
           log('error', 'Process could not stay up, exiting...');
-          cleanup();
+          cleanup(true);
         });
       }
     });
@@ -111,7 +116,7 @@ var execute = function() {
  
   watch.on('error', function(err) {
     log('error', 'Error communicating with Consul, shutting down: ' + err);
-    process.exit(-1);
+    cleanup();
   });
 };
   
