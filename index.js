@@ -38,7 +38,7 @@ var cleanup = function(skip_child_exit) {
     log('log', 'Exiting...');
     
     if (child_process !== false && !skip_child_exit) {
-      child_process.exit();
+      child_process.kill();
     }
     
     if (exists) {
