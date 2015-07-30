@@ -115,8 +115,7 @@ var execute = function() {
   });
  
   watch.on('error', function(err) {
-    log('error', 'Error communicating with Consul, shutting down: ' + err);
-    cleanup();
+    log('error', 'Error communicating with Consul, updates to configuration will resume when consul recovers: ' + err);
   });
 };
   
