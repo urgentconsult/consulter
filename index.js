@@ -64,8 +64,7 @@ var cleanup = function(skip_child_exit) {
 
 // write consul k/v config to a file location specified by config options or 
 // $PWD/config/consulter.json then, launch the program up with forever.js or
-// relaunch if it was running append NODE_ENV=consulter so that node programs 
-// pick this up by default
+// relaunch if it was running.
 var launchOrRelaunch = function(conf) {
   log('log', 'New configuration retrieved from consul k/v service');
   
@@ -109,7 +108,7 @@ var execute = function() {
   var watch = consul.watch({ method: consul.kv.get, options: { key: consul_path, recurse: true }});
   
   watch.on('change', function(data, res) {
-    var res = {};
+    res = {};
         
     if (!data) {
       log('error', 'Error retrieving configuration for specified consul key: ' + consul_path);
@@ -131,7 +130,7 @@ var execute = function() {
 };
   
 if (consul_path === false) {
-  log('error', 'A valid consul key path is required')
+  log('error', 'A valid consul key path is required');
   return process.exit(-1);
 }
 
@@ -145,7 +144,7 @@ if ('_' in args && args._.length === 1 && args._[0].indexOf('.js') !== -1) {
   
   fs.exists(app_path, function(exists) {
     if (!exists && app_path !== '') {
-      log('error', 'A valid filepath needs to be passed')
+      log('error', 'A valid filepath needs to be passed');
       process.exit(-1);
     }
   

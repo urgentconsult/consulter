@@ -15,6 +15,7 @@ Consul configuration writer with a process-restarting wrapper for Node.JS.  This
 > --consul_host OPTIONAL The consul server hostname or IP, defaults to 127.0.0.1 if omitted
 > --consul_port OPTIONAL The consul server port number, defaults to 8500
 > --config_path OPTIONAL The configuration path that you want the JSON structure written to.  This should just be a directory path, a file named "consulter.json" will be created inside of the specified directory.
+> --file_from_env OPTIONAL If present, signals that the config_filename should be taken from the NODE_ENV environment variable, followed by '.json'
 
 Path to a node.js script is optional; you can run this without a node.js application if you want to just use this script to fetch the latest configuration whenever it changes and write it to file.
 ```
