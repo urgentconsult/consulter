@@ -11,7 +11,7 @@ Consul configuration writer with a process-restarting wrapper for Node.JS.  This
 ```
 > consulter [OPTIONS] [path to node.js application filepath to start]
 
-> --consul_path REQUIRED The base path of a configuration tree.  Recursively fetches sub-keys and creates a JSON structure with the `base_path` omitted from the JSON keys
+> --consul_path REQUIRED The base path of a configuration tree in Consul K/V store.  Recursively fetches sub-keys and creates a JSON structure with the `base_path` omitted from the JSON keys
 > --consul_host OPTIONAL The consul server hostname or IP, defaults to 127.0.0.1 if omitted
 > --consul_port OPTIONAL The consul server port number, defaults to 8500
 > --config_path OPTIONAL The configuration path that you want the JSON structure written to.  This should just be a directory path, a file named "consulter.json" will be created inside of the specified directory.
