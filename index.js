@@ -9,14 +9,25 @@ var consul_host = args.consul_host     || process.env.CONSUL_HOST     || '127.0.
   , consul_port = args.consul_port     || process.env.CONSUL_PORT     || 8500
   , consul_path = args.consul_path     || process.env.CONSUL_PATH     || false
   , config_path = args.config_path     || process.env.CONFIG_PATH     || false
-  , config_file = args.config_filename || process.env.CONFIG_FILENAME || 'consulter.json'
+  , config_file = args.config_filename || process.env.CONFIG_FILENAME || false
   , one_time    = args.single_run      || process.env.SINGLE_RUN      || false
+  , use_env     = args.file_from_env   || process.env.FILE_FROM_ENV   || false
+  , node_env    = process.env.NODE_ENV || 'consulter'
+  , file_ext    = '.json'
   , app_path    = ''
   , child_process = false;
-    
+
+if(config_file===false) {
+  config_file = (use_env ? node_env : 'consulter') + file_ext;
+}
+
+if(!use_env) {
+  node_env = config_file.substr(0, config_file.length - file_ext.length);
+}
+
 var forever_confs = {
   env: {
-    NODE_ENV : 'consulter'
+    NODE_ENV : node_env
   },
   spinSleepTime: 5000,
   minUptime: 5000,
@@ -53,8 +64,7 @@ var cleanup = function(skip_child_exit) {
 
 // write consul k/v config to a file location specified by config options or 
 // $PWD/config/consulter.json then, launch the program up with forever.js or
-// relaunch if it was running append NODE_ENV=consulter so that node programs 
-// pick this up by default
+// relaunch if it was running.
 var launchOrRelaunch = function(conf) {
   log('log', 'New configuration retrieved from consul k/v service');
   
@@ -98,7 +108,7 @@ var execute = function() {
   var watch = consul.watch({ method: consul.kv.get, options: { key: consul_path, recurse: true }});
   
   watch.on('change', function(data, res) {
-    var res = {};
+    res = {};
         
     if (!data) {
       log('error', 'Error retrieving configuration for specified consul key: ' + consul_path);
@@ -120,7 +130,7 @@ var execute = function() {
 };
   
 if (consul_path === false) {
-  log('error', 'A valid consul key path is required')
+  log('error', 'A valid consul key path is required');
   return process.exit(-1);
 }
 
@@ -134,7 +144,7 @@ if ('_' in args && args._.length === 1 && args._[0].indexOf('.js') !== -1) {
   
   fs.exists(app_path, function(exists) {
     if (!exists && app_path !== '') {
-      log('error', 'A valid filepath needs to be passed')
+      log('error', 'A valid filepath needs to be passed');
       process.exit(-1);
     }
   

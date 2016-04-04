@@ -1,6 +1,6 @@
 {
   "name": "consulter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Consul configuration writer with a process-restarting wrapper",
   "main": "index.js",
   "bin" : {
